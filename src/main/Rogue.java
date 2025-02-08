@@ -1,3 +1,4 @@
+package main;
 import javax.swing.JFrame;
 
 import panel.GamePanel;
