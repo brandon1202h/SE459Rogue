@@ -1,8 +1,8 @@
-package assets.room;
+package se459rogue.assets.room;
 
 import java.util.List;
 
-import assets.util.Position;
+import se459rogue.assets.util.Position;
 
 public class Room {
     Position position;

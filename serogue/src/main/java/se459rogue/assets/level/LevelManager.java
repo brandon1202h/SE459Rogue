@@ -1,10 +1,10 @@
-package assets.level;
+package se459rogue.assets.level;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import assets.room.Room;
-import assets.room.RoomManager;
+import se459rogue.assets.room.Room;
+import se459rogue.assets.room.RoomManager;
 
 public class LevelManager {
     private RoomManager rm = new RoomManager();

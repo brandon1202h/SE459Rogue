@@ -1,4 +1,4 @@
-package assets.util;
+package se459rogue.assets.util;
 
 public class Position {
     int x;

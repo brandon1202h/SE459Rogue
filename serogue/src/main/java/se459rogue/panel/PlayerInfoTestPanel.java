@@ -1,24 +1,16 @@
-package panel;
-
-import assets.player.Player;
-import javax.swing.JPanel;
-
-import assets.level.Level;
-import assets.level.LevelManager;
-import assets.room.RoomManager;
+package se459rogue.panel;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
 
-public class GamePanel extends JPanel implements Runnable {
-    // Initializing the player
-    private Player player = new Player();
+import javax.swing.JPanel;
 
+import se459rogue.assets.player.Player;
+
+public class PlayerInfoTestPanel extends JPanel implements Runnable{
     //Screen Settings
     final int orginalTitleSize = 16; //16 X 16 tile
     final int scale = 3;
@@ -27,54 +19,37 @@ public class GamePanel extends JPanel implements Runnable {
     final int maxScreenRow = 12;
     final int screenWidth = tileSize * maxScreenCol;
     final int screenHeight = tileSize * maxScreenRow;
-    
-    private LevelManager lm = new LevelManager();
-    private RoomManager rm = new RoomManager();
-    private List<Level> levels = new ArrayList<>();
-    private int levelCount = 0;
+    private Player player = new Player();
 
-    //Start thread to start the game time
     Thread gameThread;
 
-
-    //Game panel constructor that sets the settings for the screen
-    public GamePanel(){
+    public PlayerInfoTestPanel(Player player){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
+        this.player = player;
     }
-
 
     public void activateGameThread(){
-        //passes the GamePanel class to the thread constructor
+        //passes the Panel class to the thread constructor
         gameThread = new Thread(this);
-        lm.levelSetup(levels);
         gameThread.start();
-    }
+   }
 
-    @Override
-    public void run() {
-        //game loop
-        while (gameThread != null) {
-            update();
-            repaint();
-        }
-    }
+   @Override
+   public void run() {
+       //game loop
+       while (gameThread != null) {
+           repaint();
+       }
+   }
 
-    public void update(){
 
-    }
-
-    public void paintComponent(Graphics graphic){
+   public void paintComponent(Graphics graphic){
         super.paintComponent(graphic);
         Graphics2D graphics2d = (Graphics2D) graphic;
         graphics2d.setColor(Color.WHITE);
         graphics2d.setFont(new Font("TimesRoman", Font.PLAIN, 25));
-        for(int i = 0; i < levels.get(levelCount).getNumberOfRooms(); i++){
-            rm.drawRoom(levels.get(levelCount).getRooms().get(i), graphics2d);
-        }
-
-        // Draw player stats
         drawPlayerStats(graphics2d);
     }
 
@@ -92,5 +67,6 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawString("Armor: " + player.getArmorString(), space * 4, y);
         g2.drawString("Exp: " + player.getExperienceString(), space * 5, y);
     }
-   
+
+
 }
