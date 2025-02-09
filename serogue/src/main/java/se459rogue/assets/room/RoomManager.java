@@ -1,11 +1,11 @@
-package assets.room;
+package se459rogue.assets.room;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import assets.util.Position;
+import se459rogue.assets.util.Position;
 
 public class RoomManager {
     private int minWidth = 150;
