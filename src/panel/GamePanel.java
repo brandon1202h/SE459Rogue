@@ -1,5 +1,6 @@
 package panel;
 
+import assets.player.Player;
 import javax.swing.JPanel;
 
 import assets.level.Level;
@@ -15,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GamePanel extends JPanel implements Runnable {
+    // Initializing the player
+    private Player player = new Player();
+
     //Screen Settings
     final int orginalTitleSize = 16; //16 X 16 tile
     final int scale = 3;
@@ -69,6 +73,24 @@ public class GamePanel extends JPanel implements Runnable {
         for(int i = 0; i < levels.get(levelCount).getNumberOfRooms(); i++){
             rm.drawRoom(levels.get(levelCount).getRooms().get(i), graphics2d);
         }
+
+        // Draw player stats
+        drawPlayerStats(graphics2d);
+    }
+
+    public void drawPlayerStats(Graphics2D g2) {
+        g2.setColor(Color.YELLOW);
+        g2.setFont(new Font("TimesRoman", Font.BOLD, 14));
+        int y = screenHeight - 10; // Prevent clipping at the bottom
+
+        // Calculate spacing based on screen width and number of stats
+        int space = screenWidth / 6;
+        g2.drawString("Level: " + player.getLevelString(), 10, y);
+        g2.drawString("Hits: " + player.getHealthString(), space, y);
+        g2.drawString("Str: " + player.getStrengthString(), space * 2, y);
+        g2.drawString("Gold: " + player.getGoldString(), space * 3, y);
+        g2.drawString("Armor: " + player.getArmorString(), space * 4, y);
+        g2.drawString("Exp: " + player.getExperienceString(), space * 5, y);
     }
    
 }
