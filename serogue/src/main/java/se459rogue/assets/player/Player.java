@@ -1,4 +1,4 @@
-package assets.player;
+package se459rogue.assets.player;
 
 public class Player {
     private int level;

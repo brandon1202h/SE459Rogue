@@ -1,7 +1,7 @@
-package main;
+package se459rogue;
 import javax.swing.JFrame;
 
-import panel.GamePanel;
+import se459rogue.panel.GamePanel;
 
 public class Rogue {
     public static void main(String[] args) throws Exception {

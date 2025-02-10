@@ -1,8 +1,8 @@
-package assets.level;
+package se459rogue.assets.level;
 
 import java.util.List;
 
-import assets.room.Room;
+import se459rogue.assets.room.Room;
 
 public class Level {
     private int level;
