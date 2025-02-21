@@ -3,11 +3,13 @@ package se459rogue.assets.level;
 import java.util.ArrayList;
 import java.util.List;
 
+import se459rogue.assets.monster.MonsterManager;
 import se459rogue.assets.room.Room;
 import se459rogue.assets.room.RoomManager;
 
 public class LevelManager {
     private RoomManager rm = new RoomManager();
+    private MonsterManager mm = new MonsterManager();
     
     /**
      *  A method that is used to create a new level and its corisponding rooms
@@ -23,6 +25,9 @@ public class LevelManager {
         for(int x = 0; x < 6; x++){
             rooms.add(rm.createRoom(x));
         }
+        //add monster to the rooms
+        mm.addMonster(level, rooms);
+
         //rooms.add(rm.createRoom(350,80,200,250));
         newLevel.setRooms(rooms);
 

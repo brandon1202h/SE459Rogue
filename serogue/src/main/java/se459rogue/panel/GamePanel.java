@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
@@ -43,12 +44,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         this.addKeyListener(this);
 
         // Initialize PlayerManager (starting position at center of the first room)
-        playerManager = new PlayerManager(screenWidth / 2, screenHeight / 2, tileSize);
+        
     }
 
     public void activateGameThread() {
+        Random random = new Random();
         gameThread = new Thread(this);
         lm.levelSetup(levels);
+        int xStart = (random.nextInt(levels.get(levelCount).getRooms().get(0).getWidth()) % levels.get(levelCount).getRooms().get(0).getWidth() - 2) + levels.get(levelCount).getRooms().get(0).getPosition().getX() + 1 ;
+        int yStart = (random.nextInt(levels.get(levelCount).getRooms().get(0).getHeight()) % levels.get(levelCount).getRooms().get(0).getHeight() - 2) + levels.get(levelCount).getRooms().get(0).getPosition().getY() + 1 ;
+        playerManager = new PlayerManager(xStart, yStart, tileSize);
         gameThread.start();
     }
 
@@ -83,7 +88,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         // Draw Player
         Position playerPos = playerManager.getPosition();
         graphics2d.setColor(Color.YELLOW);
-        graphics2d.fillOval(playerPos.getX(), playerPos.getY(), tileSize / 2, tileSize / 2);
+        graphics2d.setFont(new Font("TimesRoman", Font.PLAIN, 16));
+        graphics2d.drawString("@",playerPos.getX(), playerPos.getY());
 
         // Draw player stats
         drawPlayerStats(graphics2d);

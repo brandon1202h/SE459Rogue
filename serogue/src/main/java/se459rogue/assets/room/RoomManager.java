@@ -1,5 +1,7 @@
 package se459rogue.assets.room;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,6 +125,9 @@ public class RoomManager {
         boolean leftDoor = false;
         boolean rightDoor = false;
 
+        graphics2d.setColor(Color.WHITE);
+        graphics2d.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+
         // Draw the top of the room
         graphics2d.drawString("+", room.getDoors().get(0).getX(), room.getDoors().get(0).getY());
         graphics2d.drawString("-".repeat(room.getWidth()/8), room.getPosition().getX(), room.getPosition().getY());
@@ -150,6 +155,16 @@ public class RoomManager {
         graphics2d.drawString("+", room.getDoors().get(1).getX(), room.getDoors().get(1).getY());
         graphics2d.drawString("-".repeat(room.getWidth()/8), room.getPosition().getX(), room.getPosition().getY() + room.getHeight());
 
+        if(room.getMonster() !=null ){
+            drawMonster(room, graphics2d);
+        }
+
+    }
+
+    private void drawMonster(Room room, Graphics2D graphics2d){
+        graphics2d.setColor(Color.YELLOW);
+        graphics2d.setFont(new Font("TimesRoman", Font.PLAIN, 16));
+        graphics2d.drawString(room.getMonster().getSymbol(), room.getMonster().getPosition().getX(), room.getMonster().getPosition().getY());
     }
 
     //Implement later when we get to connecting rooms
