@@ -14,6 +14,7 @@ public class PlayerManager {
         this.position.setX(startX);
         this.position.setY(startY);
         this.tileSize = tileSize;
+        this.player.getHitbox().setPosition(startX, startY);
     }
 
     // Get Player Position
@@ -25,10 +26,15 @@ public class PlayerManager {
     public void movePlayer(int dx, int dy) {
         int newX = position.getX() + (dx * tileSize / 3);
         int newY = position.getY() + (dy * tileSize / 3);
+        this.player.getHitbox().setPosition(newX, newY);
 
         // TODO: Add collision detection logic here
         position.setX(newX);
         position.setY(newY);
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     // Player Stats Getters

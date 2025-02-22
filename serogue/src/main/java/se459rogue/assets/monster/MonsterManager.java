@@ -3,13 +3,15 @@ package se459rogue.assets.monster;
 import java.util.List;
 import java.util.Random;
 
+import se459rogue.assets.combat.Combat;
 import se459rogue.assets.level.Level;
 import se459rogue.assets.player.PlayerManager;
 import se459rogue.assets.room.Room;
+import se459rogue.assets.util.Hitbox;
 import se459rogue.assets.util.Position;
 
 public class MonsterManager {
-   
+   private Combat combat = new Combat();
     
     public void addMonster(int level, List<Room>rooms){
        
@@ -29,14 +31,14 @@ public class MonsterManager {
         Random random = new Random();
         Random pathFinding = new Random();
         String lowerSymbolRangeFull = "BCEHIKLORSZ";
-        String lowerSymbolRangeMid = "BEHIKLORSZ";
+        String lowerSymbolRangeMid = "BEHKORS";
         String lowerSymbolRange = "BEHKS";
         String allOtherSymbol = "ADFGJMNPQTUVWXY";
         char symbol = 'A';
         int path = pathFinding.nextInt(2);
 
         if(level >=0 && level <=6){
-            if(level >=2 && level <=5){
+            if(level >=2 && level <=4){
                 symbol = lowerSymbolRangeMid.charAt(random.nextInt(lowerSymbolRangeMid.length()));
             }else if(level >=0  && level <=1){
                 symbol = lowerSymbolRange.charAt(random.nextInt(lowerSymbolRange.length())); 
@@ -55,6 +57,7 @@ public class MonsterManager {
                 monster.setExp(20);
                 monster.setHealth(25);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'B':
                 monster.setSymbol("B");
@@ -63,6 +66,7 @@ public class MonsterManager {
                 monster.setExp(1);
                 monster.setHealth(8);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'C':
                 monster.setSymbol("C");
@@ -71,6 +75,7 @@ public class MonsterManager {
                 monster.setExp(25);
                 monster.setHealth(18);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'D':
                 monster.setSymbol("D");
@@ -79,6 +84,7 @@ public class MonsterManager {
                 monster.setExp(6800);
                 monster.setHealth(45);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'E':
                 monster.setSymbol("E");
@@ -87,6 +93,7 @@ public class MonsterManager {
                 monster.setExp(2);
                 monster.setHealth(4);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'F':
                 monster.setSymbol("F");
@@ -95,6 +102,7 @@ public class MonsterManager {
                 monster.setExp(80);
                 monster.setHealth(36);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'G':
                 monster.setSymbol("G");
@@ -103,6 +111,7 @@ public class MonsterManager {
                 monster.setExp(2000);
                 monster.setHealth(58);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'H':
                 monster.setSymbol("H");
@@ -111,6 +120,7 @@ public class MonsterManager {
                 monster.setExp(3);
                 monster.setHealth(4);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'I':
                 monster.setSymbol("I");
@@ -119,6 +129,7 @@ public class MonsterManager {
                 monster.setExp(15);
                 monster.setHealth(4);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'J':
                 monster.setSymbol("J");
@@ -127,6 +138,7 @@ public class MonsterManager {
                 monster.setExp(4000);
                 monster.setHealth(57);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'K':
                 monster.setSymbol("K");
@@ -135,6 +147,7 @@ public class MonsterManager {
                 monster.setExp(1);
                 monster.setHealth(4);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'L':
                 monster.setSymbol("L");
@@ -143,6 +156,7 @@ public class MonsterManager {
                 monster.setExp(10);
                 monster.setHealth(13);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'M':
                 monster.setSymbol("M");
@@ -151,6 +165,7 @@ public class MonsterManager {
                 monster.setExp(200);
                 monster.setHealth(36);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'N':
                 monster.setSymbol("N");
@@ -159,6 +174,7 @@ public class MonsterManager {
                 monster.setExp(37);
                 monster.setHealth(13);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'O':
                 monster.setSymbol("O");
@@ -167,6 +183,7 @@ public class MonsterManager {
                 monster.setExp(5);
                 monster.setHealth(4);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'P':
                 monster.setSymbol("P");
@@ -175,6 +192,7 @@ public class MonsterManager {
                 monster.setExp(120);
                 monster.setHealth(36);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'Q':
                 monster.setSymbol("Q");
@@ -183,6 +201,7 @@ public class MonsterManager {
                 monster.setExp(32);
                 monster.setHealth(13);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'R':
                 monster.setSymbol("R");
@@ -191,6 +210,7 @@ public class MonsterManager {
                 monster.setExp(9);
                 monster.setHealth(9);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'S':
                 monster.setSymbol("S");
@@ -199,6 +219,7 @@ public class MonsterManager {
                 monster.setExp(1);
                 monster.setHealth(9);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'T':
                 monster.setSymbol("T");
@@ -207,6 +228,7 @@ public class MonsterManager {
                 monster.setExp(120);
                 monster.setHealth(27);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'U':
                 monster.setSymbol("U");
@@ -215,6 +237,7 @@ public class MonsterManager {
                 monster.setExp(190);
                 monster.setHealth(31);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'V':
                 monster.setSymbol("V");
@@ -223,6 +246,7 @@ public class MonsterManager {
                 monster.setExp(350);
                 monster.setHealth(36);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'W':
                 monster.setSymbol("W");
@@ -231,6 +255,7 @@ public class MonsterManager {
                 monster.setExp(55);
                 monster.setHealth(22);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'X':
                 monster.setSymbol("X");
@@ -239,6 +264,7 @@ public class MonsterManager {
                 monster.setExp(100);
                 monster.setHealth(31);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'Y':
                 monster.setSymbol("Y");
@@ -247,6 +273,7 @@ public class MonsterManager {
                 monster.setExp(50);
                 monster.setHealth(18);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             case 'Z':
                 monster.setSymbol("Z");
@@ -255,6 +282,7 @@ public class MonsterManager {
                 monster.setExp(6);
                 monster.setHealth(9);
                 monster.setPathfinding(path);
+                monster.setDefeated(false);
                 break;
             default:
                 break;
@@ -268,16 +296,22 @@ public class MonsterManager {
         Random random = new Random();
         monsterPostion.setX( (random.nextInt(room.getWidth()) % room.getWidth() - 2) + room.getPosition().getX() + 1);
         monsterPostion.setY((random.nextInt(room.getHeight()) % room.getHeight() - 2) + room.getPosition().getY() + 1);
+        Hitbox monsterHitbox = new Hitbox(monsterPostion.getX(), monsterPostion.getY(), 16, 16);
         monster.setPosition(monsterPostion);
+        monster.setHitbox(monsterHitbox);
     }
 
-    public  void moveMonster(Level level, PlayerManager player){
+    public void moveMonster(Level level, PlayerManager pm){
+        Random combatIniative = new Random();
         for(int x = 0; x < level.getNumberOfRooms(); x++){
             if(level.getRooms().get(x).getMonster() != null){
-                if(level.getRooms().get(x).getMonster().getPathfinding() == 0){
-                    pafthFindingRandom(level.getRooms().get(x).getMonster().getPosition(), level.getRooms().get(x));
-                }else{
-                    pathFindingSeek(level.getRooms().get(x).getMonster().getPosition(), player.getPosition(), level.getRooms().get(x));
+                if(!level.getRooms().get(x).getMonster().isDefeated()){
+                    if(level.getRooms().get(x).getMonster().getPathfinding() == 0){
+                        pafthFindingRandom(level.getRooms().get(x).getMonster().getPosition(), level.getRooms().get(x));
+                    }else{
+                        pathFindingSeek(level.getRooms().get(x).getMonster().getPosition(), pm.getPosition(), level.getRooms().get(x));
+                    }
+                    combat.startCombat(pm, level.getRooms().get(x).getMonster(), combatIniative.nextInt(2));
                 }
             }
         }
@@ -286,13 +320,17 @@ public class MonsterManager {
     //monster moves to the player
     private void pathFindingSeek(Position start, Position destination, Room room){
         if( ( Math.abs( (start.getX() -1)  - destination.getX()) < Math.abs(start.getX() - destination.getX()))){
-            room.getMonster().getPosition().setX(start.getX() - 1);    
+            room.getMonster().getPosition().setX(start.getX() - 1);
+            room.getMonster().getHitbox().setPosition(room.getMonster().getPosition().getX(), room.getMonster().getPosition().getY());   
         }else if( ( Math.abs((start.getX() + 1) - destination.getX()) < Math.abs(start.getX() - destination.getX()))){
             room.getMonster().getPosition().setX(start.getX() + 1);
+            room.getMonster().getHitbox().setPosition(room.getMonster().getPosition().getX(), room.getMonster().getPosition().getY());  
         }else if(( Math.abs( (start.getY() + 1)  - destination.getY()) < Math.abs(start.getY() - destination.getY()) )){
             room.getMonster().getPosition().setY(start.getY() + 1);
+            room.getMonster().getHitbox().setPosition(room.getMonster().getPosition().getX(), room.getMonster().getPosition().getY());  
         }else if(( Math.abs( (start.getY() -1)  - destination.getY()) < Math.abs(start.getY() - destination.getY()) )){
             room.getMonster().getPosition().setY(start.getY() - 1);
+            room.getMonster().getHitbox().setPosition(room.getMonster().getPosition().getX(), room.getMonster().getPosition().getY());  
         }
     }
 
@@ -303,18 +341,22 @@ public class MonsterManager {
             /*Go Up */
             case 0:
                 room.getMonster().getPosition().setY(start.getY() - 1);
+                room.getMonster().getHitbox().setPosition(room.getMonster().getPosition().getX(), room.getMonster().getPosition().getY());  
                 break;
             /*Go Down */
             case 1:
                 room.getMonster().getPosition().setY(start.getY() + 1);
+                room.getMonster().getHitbox().setPosition(room.getMonster().getPosition().getX(), room.getMonster().getPosition().getY());  
                 break;
             /*Go Left */
             case 2:
                 room.getMonster().getPosition().setX(start.getX() - 1);
+                room.getMonster().getHitbox().setPosition(room.getMonster().getPosition().getX(), room.getMonster().getPosition().getY());  
                 break;
             /*Go Right */
             case 3:
                 room.getMonster().getPosition().setX(start.getX() + 1);
+                room.getMonster().getHitbox().setPosition(room.getMonster().getPosition().getX(), room.getMonster().getPosition().getY());  
                 break;
             /*Do Nothing */
             case 4:

@@ -156,7 +156,9 @@ public class RoomManager {
         graphics2d.drawString("-".repeat(room.getWidth()/8), room.getPosition().getX(), room.getPosition().getY() + room.getHeight());
 
         if(room.getMonster() !=null ){
-            drawMonster(room, graphics2d);
+            if(!room.getMonster().isDefeated()){
+                drawMonster(room, graphics2d);
+            }
         }
 
     }

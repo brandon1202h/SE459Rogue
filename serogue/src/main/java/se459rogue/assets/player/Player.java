@@ -1,5 +1,7 @@
 package se459rogue.assets.player;
 
+import se459rogue.assets.util.Hitbox;
+
 public class Player {
     private int level;
     private int currentHealth;
@@ -8,6 +10,9 @@ public class Player {
     private int gold;
     private int armor;
     private int experience;
+    private int requiredExp;
+    private boolean defeated;
+    private Hitbox hitbox;
 
     // Player constructor
     public Player() {
@@ -19,6 +24,9 @@ public class Player {
         this.gold = 0;
         this.armor = 0;
         this.experience = 0;
+        this.requiredExp = 2;
+        this.defeated = false;
+        this.hitbox = new Hitbox(0, 0, 16, 16);
     }
 
     // Methods to get player stats as strings
@@ -54,4 +62,85 @@ public class Player {
     }
 
     // Additional methods to modify the player stats, to be implemented in future sprints.
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public void setArmor(int armor) {
+        this.armor = armor;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    public Hitbox getHitbox() {
+        return hitbox;
+    }
+
+    public void setHitbox(Hitbox hitbox) {
+        this.hitbox = hitbox;
+    }
+
+    public boolean isDefeated() {
+        return defeated;
+    }
+
+    public void setDefeated(boolean defeated) {
+        this.defeated = defeated;
+    }
+
+    public int getRequiredExp() {
+        return requiredExp;
+    }
+
+    public void setRequiredExp(int requiredExp) {
+        this.requiredExp = requiredExp;
+    }
+
 }
