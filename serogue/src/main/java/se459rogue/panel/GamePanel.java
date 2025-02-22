@@ -4,6 +4,7 @@ import se459rogue.assets.player.PlayerManager;
 import se459rogue.assets.util.Position;
 import se459rogue.assets.level.Level;
 import se459rogue.assets.level.LevelManager;
+import se459rogue.assets.monster.MonsterManager;
 import se459rogue.assets.room.RoomManager;
 
 import javax.swing.JPanel;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel implements Runnable, KeyListener {
     // Initialize PlayerManager to handle movement
     private PlayerManager playerManager;
+    private MonsterManager monsterManager = new MonsterManager();
 
     // Screen Settings
     final int originalTitleSize = 16; // 16 X 16 tile
@@ -118,27 +120,35 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         switch (key) {
             case KeyEvent.VK_W: case KeyEvent.VK_UP:
                 playerManager.movePlayer(0, -1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_S: case KeyEvent.VK_DOWN:
                 playerManager.movePlayer(0, 1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_A: case KeyEvent.VK_LEFT:
                 playerManager.movePlayer(-1, 0);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_D: case KeyEvent.VK_RIGHT:
                 playerManager.movePlayer(1, 0);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_Y: // Diagonal Up-Left
                 playerManager.movePlayer(-1, -1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_U: // Diagonal Up-Right
                 playerManager.movePlayer(1, -1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_B: // Diagonal Down-Left
                 playerManager.movePlayer(-1, 1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_N: // Diagonal Down-Right
                 playerManager.movePlayer(1, 1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
         }
 
