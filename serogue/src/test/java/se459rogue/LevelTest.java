@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.BeforeAll;
 import se459rogue.assets.level.Level;
 import se459rogue.assets.level.LevelManager;
 import se459rogue.panel.LevelTestPanel;
