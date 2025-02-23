@@ -17,6 +17,11 @@ import se459rogue.panel.LevelTestPanel;
 public class LevelTest {
     private LevelManager lm = new LevelManager();
      private List<Level> levels = new ArrayList<>();
+
+    @BeforeAll
+    public static void setupClass() {
+        System.setProperty("java.awt.headless", "true");
+    }
     
     @Test
     public void levelSetupTest(){
