@@ -37,10 +37,7 @@ public class PlayerInfoTest {
 
         // Instead of interacting with JFrame, assert on mock or other logic if applicable
         // As JFrame is not used, we check our business logic or interactions:
-        // For example, assertFalse(window.isVisible()); if window was a mock
-
-        // Using assertFalse to directly use the import static assertion method
-        assertFalse(gPanel.isActive()); // This would require isActive() method or similar to exist
+        assertFalse(window.isVisible());
     }
 
 }
