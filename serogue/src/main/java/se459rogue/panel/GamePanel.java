@@ -4,6 +4,7 @@ import se459rogue.assets.player.PlayerManager;
 import se459rogue.assets.util.Position;
 import se459rogue.assets.level.Level;
 import se459rogue.assets.level.LevelManager;
+import se459rogue.assets.monster.MonsterManager;
 import se459rogue.assets.room.RoomManager;
 
 import javax.swing.JPanel;
@@ -11,11 +12,13 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
     // Initialize PlayerManager to handle movement
     private PlayerManager playerManager;
+    private MonsterManager monsterManager = new MonsterManager();
 
     // Screen Settings
     final int originalTitleSize = 16; // 16 X 16 tile
@@ -41,14 +44,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.addKeyListener(this);
-
-        // Initialize PlayerManager (starting position at center of the first room)
-        playerManager = new PlayerManager(screenWidth / 2, screenHeight / 2, tileSize);
     }
 
     public void activateGameThread() {
+        Random random = new Random();
         gameThread = new Thread(this);
         lm.levelSetup(levels);
+        int xStart = (random.nextInt(levels.get(levelCount).getRooms().get(0).getWidth()) % levels.get(levelCount).getRooms().get(0).getWidth() - 2) + levels.get(levelCount).getRooms().get(0).getPosition().getX() + 1 ;
+        int yStart = (random.nextInt(levels.get(levelCount).getRooms().get(0).getHeight()) % levels.get(levelCount).getRooms().get(0).getHeight() - 2) + levels.get(levelCount).getRooms().get(0).getPosition().getY() + 1 ;
+        playerManager = new PlayerManager(xStart, yStart, tileSize);
         gameThread.start();
     }
 
@@ -68,6 +72,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     public void update() {
         // Future logic (collision detection, interactions, etc.)
+        if(playerManager.getPlayer().isDefeated()){
+
+        }
     }
 
     @Override
@@ -75,18 +82,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         super.paintComponent(graphic);
         Graphics2D graphics2d = (Graphics2D) graphic;
 
-        // Draw rooms
-        for (int i = 0; i < levels.get(levelCount).getNumberOfRooms(); i++) {
-            rm.drawRoom(levels.get(levelCount).getRooms().get(i), graphics2d);
+        if(this.playerManager.getPlayer().getCurrentHealth() <= 0){
+            drawGameOverScreen(graphics2d);
+        }else{
+        
+            // Draw rooms
+            for (int i = 0; i < levels.get(levelCount).getNumberOfRooms(); i++) {
+                rm.drawRoom(levels.get(levelCount).getRooms().get(i), graphics2d);
+            }
+    
+            // Draw Player
+            Position playerPos = playerManager.getPosition();
+            graphics2d.setColor(Color.YELLOW);
+            graphics2d.setFont(new Font("TimesRoman", Font.PLAIN, 16));
+            graphics2d.drawString("@",playerPos.getX(), playerPos.getY());
+    
+            // Draw player stats
+            drawPlayerStats(graphics2d);
+
         }
-
-        // Draw Player
-        Position playerPos = playerManager.getPosition();
-        graphics2d.setColor(Color.YELLOW);
-        graphics2d.fillOval(playerPos.getX(), playerPos.getY(), tileSize / 2, tileSize / 2);
-
-        // Draw player stats
-        drawPlayerStats(graphics2d);
     }
 
     public void drawPlayerStats(Graphics2D g2) {
@@ -112,27 +126,35 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         switch (key) {
             case KeyEvent.VK_W: case KeyEvent.VK_UP:
                 playerManager.movePlayer(0, -1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_S: case KeyEvent.VK_DOWN:
                 playerManager.movePlayer(0, 1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_A: case KeyEvent.VK_LEFT:
                 playerManager.movePlayer(-1, 0);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_D: case KeyEvent.VK_RIGHT:
                 playerManager.movePlayer(1, 0);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_Y: // Diagonal Up-Left
                 playerManager.movePlayer(-1, -1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_U: // Diagonal Up-Right
                 playerManager.movePlayer(1, -1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_B: // Diagonal Down-Left
                 playerManager.movePlayer(-1, 1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
             case KeyEvent.VK_N: // Diagonal Down-Right
                 playerManager.movePlayer(1, 1);
+                monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 break;
         }
 
@@ -144,4 +166,33 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {}
+
+
+    public void drawGameOverScreen(Graphics2D g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 40));
+        String gameOverText = "Game Over!";
+        
+        FontMetrics fm = g.getFontMetrics();
+        int textX = (getWidth() - fm.stringWidth(gameOverText)) / 2;
+        int textY = getHeight() / 2 - fm.getHeight();
+        g.drawString(gameOverText, textX, textY);
+
+
+        /*Add back in once the restart and exit function is added */
+
+        // g.setFont(new Font("Arial", Font.PLAIN, 20));
+        // String restartText = "Press R to Restart";
+        // String exitText = "Press E to Exit";
+        // int restartTextX = (getWidth() - fm.stringWidth(restartText)) / 2;
+        // int restartTextY = getHeight() / 2 + 3 * fm.getHeight();
+        //  int exitTextX = (getWidth() - fm.stringWidth(exitText)) / 2;
+        // int exitTextY = getHeight() / 2 + 5 * fm.getHeight();
+        // g.drawString(restartText, restartTextX, restartTextY);
+        // g.drawString(exitText, exitTextX, exitTextY);
+    }
+
+
 }
