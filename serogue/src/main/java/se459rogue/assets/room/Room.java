@@ -2,6 +2,8 @@ package se459rogue.assets.room;
 
 import java.util.List;
 
+import se459rogue.assets.item.Item;
+import se459rogue.assets.item.gold.Gold;
 import se459rogue.assets.monster.Monster;
 import se459rogue.assets.util.Position;
 
@@ -11,6 +13,8 @@ public class Room {
     private int width;
     private List<Position> doors;
     private Monster monster;
+    private Item item;
+    private Gold gold;
 
     public Position getPosition() {
         return this.position;
@@ -52,6 +56,19 @@ public class Room {
         this.monster = monster;
     }
 
+    public Item getItem() {
+        return item;
+    }
 
+    public void setItem(Item item) {
+        this.item = item;
+    }
 
+    public Gold getGold() {
+        return gold;
+    }
+
+    public void setGold(Gold gold) {
+        this.gold = gold;
+    }
 }

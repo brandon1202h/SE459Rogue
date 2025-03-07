@@ -1,0 +1,5 @@
+package se459rogue.assets.item.armor;
+
+public enum ArmorType {
+    LEATHER,STUDDED_LEATHER,RING_MAIL,SCALE_MAIL,CHAIN_MAIL,BRANDED_MAIL,SPLINT_MAIL,PLATE_MAIL
+}

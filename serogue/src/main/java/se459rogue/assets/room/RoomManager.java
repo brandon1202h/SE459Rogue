@@ -161,6 +161,18 @@ public class RoomManager {
             }
         }
 
+        if(room.getItem() !=null){
+            if(!room.getItem().isCollected() && room.getItem().getName() != null){
+                drawItem(room, graphics2d);
+            }
+        }
+
+        if(room.getGold() != null){
+            if(!room.getGold().isCollected()){
+                drawGold(room, graphics2d);
+            }
+        }
+
     }
 
     private void drawMonster(Room room, Graphics2D graphics2d){
@@ -168,6 +180,18 @@ public class RoomManager {
         graphics2d.setFont(new Font("TimesRoman", Font.PLAIN, 16));
         graphics2d.drawString(room.getMonster().getSymbol(), room.getMonster().getPosition().getX(), room.getMonster().getPosition().getY());
     }
+
+    private void drawItem(Room room, Graphics2D graphics2d){
+        graphics2d.setColor(Color.YELLOW);
+        graphics2d.setFont(new Font("TimesRoman", Font.PLAIN, 16));
+        graphics2d.drawString(room.getItem().getName(), room.getItem().getPosition().getX(), room.getItem().getPosition().getY());
+    }
+
+    private void drawGold(Room room, Graphics2D graphics2d){
+        graphics2d.setColor(Color.YELLOW);
+        graphics2d.setFont(new Font("TimesRoman", Font.PLAIN, 16));
+        graphics2d.drawString(Integer.toString(room.getGold().getAmmount()), room.getGold().getPosition().getX(), room.getGold().getPosition().getY());
+    } 
 
     //Implement later when we get to connecting rooms
     // private void connectDoors(Position d1, Position d2){
