@@ -6,8 +6,7 @@ public class PlayerManager {
     private Player player;
     private Position position;
     private int tileSize;
-    private boolean weaponBreakMessage = false;
-    private boolean armorBreakMessage = false;
+    private int playerSteps;
 
     // Constructor
     public PlayerManager(int startX, int startY, int tileSize) {
@@ -33,6 +32,8 @@ public class PlayerManager {
         // TODO: Add collision detection logic here
         position.setX(newX);
         position.setY(newY);
+
+        playerSteps++;
     }
 
     public Player getPlayer() {
@@ -64,21 +65,12 @@ public class PlayerManager {
         return player.getExperienceString();
     }
 
-    public boolean isWeaponBreakMessage() {
-        return weaponBreakMessage;
+    public int getPlayerSteps() {
+        return playerSteps;
     }
 
-    public void setWeaponBreakMessage(boolean weaponBreakMessage) {
-        this.weaponBreakMessage = weaponBreakMessage;
+    public void setPlayerSteps(int playerSteps) {
+        this.playerSteps = playerSteps;
     }
-
-    public boolean isArmorBreakMessage() {
-        return armorBreakMessage;
-    }
-
-    public void setArmorBreakMessage(boolean armorBreakMessage) {
-        this.armorBreakMessage = armorBreakMessage;
-    }
-
     
 }

@@ -33,6 +33,8 @@ public class LevelManager {
         im.addItem(rooms);
         //add gold to the rooms
         im.addGold(rooms);
+        //add food to the rooms
+        im.addFood(rooms);
 
         newLevel.setRooms(rooms);
 

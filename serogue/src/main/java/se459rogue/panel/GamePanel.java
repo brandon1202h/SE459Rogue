@@ -2,6 +2,7 @@ package se459rogue.panel;
 
 import se459rogue.assets.player.PlayerManager;
 import se459rogue.assets.util.Position;
+import se459rogue.assets.hunger.Hunger;
 import se459rogue.assets.item.Item;
 import se459rogue.assets.item.ItemManager;
 import se459rogue.assets.level.Level;
@@ -9,7 +10,6 @@ import se459rogue.assets.level.LevelManager;
 import se459rogue.assets.monster.MonsterManager;
 import se459rogue.assets.room.RoomManager;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -23,6 +23,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private PlayerManager playerManager;
     private MonsterManager monsterManager;
     private ItemManager itemManager;
+    private Hunger hungerManager;
 
     // Screen Settings
     final int originalTitleSize = 16; // 16 X 16 tile
@@ -61,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         playerManager = new PlayerManager(xStart, yStart, tileSize);
         monsterManager = new MonsterManager();
         itemManager = new ItemManager();
+        hungerManager = new Hunger();
         gameThread.start();
     }
 
@@ -90,20 +92,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         super.paintComponent(graphic);
         graphics2d = (Graphics2D) graphic;
 
-        if(this.playerManager.getPlayer().getCurrentHealth() <= 0){
+        if(playerManager.getPlayer().getCurrentHealth() <= 0){
             drawGameOverScreen(graphics2d);
         }else{
             
-            if(playerManager.isArmorBreakMessage()){
-                playerManager.setArmorBreakMessage(false);
-                JOptionPane.showMessageDialog(null, "Your Armor has been broken!");
-            }
-
-            if(playerManager.isWeaponBreakMessage()){
-                playerManager.setWeaponBreakMessage(false);
-                JOptionPane.showMessageDialog(null, "Your Weapon has been broken!");
-            }
-        
             // Draw rooms
             for (int i = 0; i < levels.get(levelCount).getNumberOfRooms(); i++) {
                 rm.drawRoom(levels.get(levelCount).getRooms().get(i), graphics2d);
@@ -168,48 +160,64 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
                 itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_S: case KeyEvent.VK_DOWN:
                 playerManager.movePlayer(0, 1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
                 itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_A: case KeyEvent.VK_LEFT:
                 playerManager.movePlayer(-1, 0);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
                 itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_D: case KeyEvent.VK_RIGHT:
                 playerManager.movePlayer(1, 0);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
                 itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_Y: // Diagonal Up-Left
                 playerManager.movePlayer(-1, -1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
                 itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_U: // Diagonal Up-Right
                 playerManager.movePlayer(1, -1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
                 itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_B: // Diagonal Down-Left
                 playerManager.movePlayer(-1, 1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
                 itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_N: // Diagonal Down-Right
                 playerManager.movePlayer(1, 1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
                 itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
                 itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_I:
                 if(printInventory){

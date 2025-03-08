@@ -173,6 +173,12 @@ public class RoomManager {
             }
         }
 
+        if(room.getFood() !=null){
+            if(!room.getFood().isCollected()){
+                drawFood(room, graphics2d);
+            }
+        }
+
     }
 
     private void drawMonster(Room room, Graphics2D graphics2d){
@@ -191,7 +197,13 @@ public class RoomManager {
         graphics2d.setColor(Color.YELLOW);
         graphics2d.setFont(new Font("TimesRoman", Font.PLAIN, 16));
         graphics2d.drawString(Integer.toString(room.getGold().getAmmount()), room.getGold().getPosition().getX(), room.getGold().getPosition().getY());
-    } 
+    }
+    
+    private void drawFood(Room room, Graphics2D graphics2d){
+        graphics2d.setColor(Color.YELLOW);
+        graphics2d.setFont(new Font("TimesRoman", Font.PLAIN, 16));
+        graphics2d.drawString("FO", room.getFood().getPosition().getX(), room.getFood().getPosition().getY());
+    }
 
     //Implement later when we get to connecting rooms
     // private void connectDoors(Position d1, Position d2){

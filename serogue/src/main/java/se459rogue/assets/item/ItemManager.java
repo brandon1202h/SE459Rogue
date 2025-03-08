@@ -3,11 +3,14 @@ package se459rogue.assets.item;
 import java.util.List;
 import java.util.Random;
 
+import se459rogue.assets.hunger.HungerStages;
 import se459rogue.assets.item.armor.Armor;
+import se459rogue.assets.item.food.Food;
 import se459rogue.assets.item.gold.Gold;
 import se459rogue.assets.item.weapon.Weapon;
 import se459rogue.assets.level.Level;
 import se459rogue.assets.player.Player;
+import se459rogue.assets.player.PlayerManager;
 import se459rogue.assets.room.Room;
 import se459rogue.assets.util.Hitbox;
 import se459rogue.assets.util.Position;
@@ -31,6 +34,16 @@ public class ItemManager {
             
             if(goldChance.nextInt() % 2 == 0){
                 rooms.get(x).setGold(goldCreation(rooms.get(x)));
+            }
+        }
+    }
+
+    public void addFood(List<Room> rooms){
+        for(int x = 0; x < rooms.size(); x++){
+            Random foodChance = new Random();
+            
+            if(foodChance.nextInt() % 2 == 0){
+                rooms.get(x).setFood(foodCreation(rooms.get(x)));
             }
         }
     }
@@ -127,6 +140,19 @@ public class ItemManager {
         return gold;
     }
 
+    private Food foodCreation(Room room){
+        Food food = new Food();
+        Position foodPostion = new Position();
+        Random random = new Random();
+        foodPostion.setX( (random.nextInt(room.getWidth()) % room.getWidth() - 2) + room.getPosition().getX() + 1);
+        foodPostion.setY((random.nextInt(room.getHeight()) % room.getHeight() - 2) + room.getPosition().getY() + 1);
+        Hitbox foodHitbox = new Hitbox(foodPostion.getX(), foodPostion.getY(), 16, 16);
+        food.setPosition(foodPostion);
+        food.setHitbox(foodHitbox);
+
+        return food;
+    }
+
 
     private void setItemStartingPostion(Item item, Room room){
         Position itemPostion = new Position();
@@ -174,6 +200,24 @@ public class ItemManager {
         }
     }
 
+    public void collectFood(Level level, PlayerManager playerManager){
+        for(int x = 0; x < level.getNumberOfRooms(); x++){
+            if(level.getRooms().get(x).getFood() != null){
+                if(!level.getRooms().get(x).getFood().isCollected()){
+                    if(playerManager.getPlayer().getHitbox().intersects(level.getRooms().get(x).getFood().getHitbox())){
+                        level.getRooms().get(x).getFood().setCollected(true);
+                        playerManager.getPlayer().setHungerStage(HungerStages.STAGE_ZERO);
+                        //steps is how we track the hunger stages
+                        //when the player eats we one to reset the hunger stage to zero
+                        //and set the steps back to zero resetting the hunger counter
+                        //steps are treated as turns.
+                        playerManager.setPlayerSteps(0);
+                    }
+                }
+            }
+        }
+    }
+
     public void equipItem(int slot, Player player){
         if(!player.getItems().isEmpty() && player.getItems().get(slot).getType() != null){
             if(player.getItems().get(slot).getType() == ItemType.WEAPON || player.getItems().get(slot).getType() == ItemType.ARMOR){
@@ -199,7 +243,7 @@ public class ItemManager {
                 }
 
                 //Code that checks if the user has any other item of these types equiped
-                //since you can only have one equiped the current one will be unequiped
+                //since you can only have one equiped, the current one will be unequiped
                 if(player.getItems().get(slot).getType() == ItemType.WEAPON){
                     for (Item item : player.getItems()) {
                         if(item.getType() == ItemType.WEAPON){
@@ -227,7 +271,7 @@ public class ItemManager {
                     }
                 }
 
-                //equips theitem
+                //equips the item
                 if(player.getItems().get(slot).getType() == ItemType.WEAPON){
                     Weapon weapon = (Weapon) player.getItems().get(slot);
                     weapon.setEquiped(true);

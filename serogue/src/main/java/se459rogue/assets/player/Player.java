@@ -3,6 +3,7 @@ package se459rogue.assets.player;
 import java.util.ArrayList;
 import java.util.List;
 
+import se459rogue.assets.hunger.HungerStages;
 import se459rogue.assets.item.Item;
 import se459rogue.assets.util.Hitbox;
 
@@ -17,11 +18,11 @@ public class Player {
     private int requiredExp;
     private boolean defeated;
     private Hitbox hitbox;
-    @SuppressWarnings("unused")
     private List<Item> items;
     private int maxItems;
     private int baseStrength;
     private int baseArmor;
+    private HungerStages hungerStage;
 
     // Player constructor
     public Player() {
@@ -40,6 +41,7 @@ public class Player {
         this.maxItems = 5;
         this.baseStrength = 3;
         this.baseArmor = 10;
+        this.hungerStage = HungerStages.STAGE_ZERO;
     }
 
     // Methods to get player stats as strings
@@ -186,6 +188,14 @@ public class Player {
 
     public void setBaseArmor(int baseArmor) {
         this.baseArmor = baseArmor;
+    }
+
+    public HungerStages getHungerStage() {
+        return hungerStage;
+    }
+
+    public void setHungerStage(HungerStages hungerStage) {
+        this.hungerStage = hungerStage;
     }
 
 }

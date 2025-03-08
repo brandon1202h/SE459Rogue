@@ -2,6 +2,8 @@ package se459rogue.assets.combat;
 
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import se459rogue.assets.item.Item;
 import se459rogue.assets.item.ItemType;
 import se459rogue.assets.item.armor.Armor;
@@ -75,7 +77,7 @@ public class Combat {
             if(equipedWeapon.getHealth() <=0){
                 pm.getPlayer().getItems().remove(weaponIndex);
                 pm.getPlayer().setStrength(pm.getPlayer().getBaseStrength());
-                pm.setWeaponBreakMessage(true);
+                JOptionPane.showMessageDialog(null, "Your Weapon has been broken!");
             }else{
                 Item updatedItem = equipedWeapon;
                 pm.getPlayer().getItems().set(weaponIndex, updatedItem);
@@ -111,7 +113,7 @@ public class Combat {
             if(equipedArmor.getHealth() <= 0){
                 pm.getPlayer().getItems().remove(armorIndex);
                 pm.getPlayer().setArmor(pm.getPlayer().getBaseArmor());
-                pm.setArmorBreakMessage(true);
+                JOptionPane.showMessageDialog(null, "Your Armor has been broken!");
             }else{
                 Item updatedItem = equipedArmor;
                 pm.getPlayer().getItems().set(armorIndex, updatedItem);
