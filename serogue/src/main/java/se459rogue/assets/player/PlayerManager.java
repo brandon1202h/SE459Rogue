@@ -6,6 +6,8 @@ public class PlayerManager {
     private Player player;
     private Position position;
     private int tileSize;
+    private boolean weaponBreakMessage = false;
+    private boolean armorBreakMessage = false;
 
     // Constructor
     public PlayerManager(int startX, int startY, int tileSize) {
@@ -61,4 +63,22 @@ public class PlayerManager {
     public String getExperienceString() {
         return player.getExperienceString();
     }
+
+    public boolean isWeaponBreakMessage() {
+        return weaponBreakMessage;
+    }
+
+    public void setWeaponBreakMessage(boolean weaponBreakMessage) {
+        this.weaponBreakMessage = weaponBreakMessage;
+    }
+
+    public boolean isArmorBreakMessage() {
+        return armorBreakMessage;
+    }
+
+    public void setArmorBreakMessage(boolean armorBreakMessage) {
+        this.armorBreakMessage = armorBreakMessage;
+    }
+
+    
 }

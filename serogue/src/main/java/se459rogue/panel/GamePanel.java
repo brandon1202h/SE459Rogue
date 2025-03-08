@@ -9,6 +9,7 @@ import se459rogue.assets.level.LevelManager;
 import se459rogue.assets.monster.MonsterManager;
 import se459rogue.assets.room.RoomManager;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -92,6 +93,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         if(this.playerManager.getPlayer().getCurrentHealth() <= 0){
             drawGameOverScreen(graphics2d);
         }else{
+            
+            if(playerManager.isArmorBreakMessage()){
+                playerManager.setArmorBreakMessage(false);
+                JOptionPane.showMessageDialog(null, "Your Armor has been broken!");
+            }
+
+            if(playerManager.isWeaponBreakMessage()){
+                playerManager.setWeaponBreakMessage(false);
+                JOptionPane.showMessageDialog(null, "Your Weapon has been broken!");
+            }
         
             // Draw rooms
             for (int i = 0; i < levels.get(levelCount).getNumberOfRooms(); i++) {
