@@ -6,6 +6,7 @@ public class PlayerManager {
     private Player player;
     private Position position;
     private int tileSize;
+    private int playerSteps;
 
     // Constructor
     public PlayerManager(int startX, int startY, int tileSize) {
@@ -31,6 +32,8 @@ public class PlayerManager {
         // TODO: Add collision detection logic here
         position.setX(newX);
         position.setY(newY);
+
+        playerSteps++;
     }
 
     public Player getPlayer() {
@@ -61,4 +64,13 @@ public class PlayerManager {
     public String getExperienceString() {
         return player.getExperienceString();
     }
+
+    public int getPlayerSteps() {
+        return playerSteps;
+    }
+
+    public void setPlayerSteps(int playerSteps) {
+        this.playerSteps = playerSteps;
+    }
+    
 }

@@ -2,6 +2,9 @@ package se459rogue.panel;
 
 import se459rogue.assets.player.PlayerManager;
 import se459rogue.assets.util.Position;
+import se459rogue.assets.hunger.Hunger;
+import se459rogue.assets.item.Item;
+import se459rogue.assets.item.ItemManager;
 import se459rogue.assets.level.Level;
 import se459rogue.assets.level.LevelManager;
 import se459rogue.assets.monster.MonsterManager;
@@ -18,7 +21,9 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel implements Runnable, KeyListener {
     // Initialize PlayerManager to handle movement
     private PlayerManager playerManager;
-    private MonsterManager monsterManager = new MonsterManager();
+    private MonsterManager monsterManager;
+    private ItemManager itemManager;
+    private Hunger hungerManager;
 
     // Screen Settings
     final int originalTitleSize = 16; // 16 X 16 tile
@@ -33,6 +38,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private RoomManager rm = new RoomManager();
     private List<Level> levels = new ArrayList<>();
     private int levelCount = 0;
+    Graphics2D graphics2d;
+    boolean printInventory = false;
 
     // Start thread to start the game time
     Thread gameThread;
@@ -53,6 +60,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         int xStart = (random.nextInt(levels.get(levelCount).getRooms().get(0).getWidth()) % levels.get(levelCount).getRooms().get(0).getWidth() - 2) + levels.get(levelCount).getRooms().get(0).getPosition().getX() + 1 ;
         int yStart = (random.nextInt(levels.get(levelCount).getRooms().get(0).getHeight()) % levels.get(levelCount).getRooms().get(0).getHeight() - 2) + levels.get(levelCount).getRooms().get(0).getPosition().getY() + 1 ;
         playerManager = new PlayerManager(xStart, yStart, tileSize);
+        monsterManager = new MonsterManager();
+        itemManager = new ItemManager();
+        hungerManager = new Hunger();
         gameThread.start();
     }
 
@@ -80,12 +90,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void paintComponent(Graphics graphic) {
         super.paintComponent(graphic);
-        Graphics2D graphics2d = (Graphics2D) graphic;
+        graphics2d = (Graphics2D) graphic;
 
-        if(this.playerManager.getPlayer().getCurrentHealth() <= 0){
+        if(playerManager.getPlayer().getCurrentHealth() <= 0){
             drawGameOverScreen(graphics2d);
         }else{
-        
+            
             // Draw rooms
             for (int i = 0; i < levels.get(levelCount).getNumberOfRooms(); i++) {
                 rm.drawRoom(levels.get(levelCount).getRooms().get(i), graphics2d);
@@ -99,6 +109,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     
             // Draw player stats
             drawPlayerStats(graphics2d);
+
+            if(printInventory){
+                printInventory();
+            }
+        
 
         }
     }
@@ -118,6 +133,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         g2.drawString("Exp: " + playerManager.getExperienceString(), space * 5, y);
     }
 
+    private void printInventory(){
+        int y = screenHeight - 550;
+        int space = screenWidth / 6;
+        int spacing = 20;
+        graphics2d.setColor(Color.YELLOW);
+        graphics2d.setFont(new Font("TimesRoman", Font.BOLD, 14));
+        graphics2d.drawString("Inventory: ", 5, y);
+        FontMetrics metrics = graphics2d.getFontMetrics();
+        for (Item item : playerManager.getPlayer().getItems()) {
+            graphics2d.drawString(item.getInventoryName(), space,  y);
+            space += metrics.stringWidth(item.getInventoryName()) + spacing;
+        }
+        repaint();
+    }
+
+
     // KeyListener Methods for Movement
     @Override
     public void keyPressed(KeyEvent e) {
@@ -127,34 +158,88 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             case KeyEvent.VK_W: case KeyEvent.VK_UP:
                 playerManager.movePlayer(0, -1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
+                itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_S: case KeyEvent.VK_DOWN:
                 playerManager.movePlayer(0, 1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
+                itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_A: case KeyEvent.VK_LEFT:
                 playerManager.movePlayer(-1, 0);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
+                itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_D: case KeyEvent.VK_RIGHT:
                 playerManager.movePlayer(1, 0);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
+                itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_Y: // Diagonal Up-Left
                 playerManager.movePlayer(-1, -1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
+                itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_U: // Diagonal Up-Right
                 playerManager.movePlayer(1, -1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
+                itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_B: // Diagonal Down-Left
                 playerManager.movePlayer(-1, 1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
+                itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
                 break;
             case KeyEvent.VK_N: // Diagonal Down-Right
                 playerManager.movePlayer(1, 1);
                 monsterManager.moveMonster(levels.get(levelCount), playerManager);
+                itemManager.collectItem(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectGold(levels.get(levelCount), playerManager.getPlayer());
+                itemManager.collectFood(levels.get(levelCount), playerManager);
+                hungerManager.hungerStageCheck(playerManager);
+                break;
+            case KeyEvent.VK_I:
+                if(printInventory){
+                    printInventory = false;
+                }else{
+                    printInventory = true;
+                }
+                break;
+            case KeyEvent.VK_1:
+                itemManager.equipItem(0, playerManager.getPlayer());
+                break;
+            case KeyEvent.VK_2:
+                itemManager.equipItem(1, playerManager.getPlayer());
+                break;
+            case KeyEvent.VK_3:
+                itemManager.equipItem(2, playerManager.getPlayer());
+                break;
+            case KeyEvent.VK_4:
+                itemManager.equipItem(3, playerManager.getPlayer());
+                break;
+            case KeyEvent.VK_5:
+                itemManager.equipItem(4, playerManager.getPlayer());
                 break;
         }
 
