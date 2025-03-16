@@ -23,6 +23,7 @@ public class Player {
     private int baseStrength;
     private int baseArmor;
     private HungerStages hungerStage;
+    private boolean slowDigestion;
 
     // Player constructor
     public Player() {
@@ -42,6 +43,7 @@ public class Player {
         this.baseStrength = 3;
         this.baseArmor = 10;
         this.hungerStage = HungerStages.STAGE_ZERO;
+        this.slowDigestion = false;
     }
 
     // Methods to get player stats as strings
@@ -196,6 +198,14 @@ public class Player {
 
     public void setHungerStage(HungerStages hungerStage) {
         this.hungerStage = hungerStage;
+    }
+
+    public boolean isSlowDigestion() {
+        return slowDigestion;
+    }
+
+    public void setSlowDigestion(boolean slowDigestion) {
+        this.slowDigestion = slowDigestion;
     }
 
 }

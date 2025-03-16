@@ -3,10 +3,18 @@ package se459rogue.assets.item;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import se459rogue.assets.hunger.HungerStages;
 import se459rogue.assets.item.armor.Armor;
 import se459rogue.assets.item.food.Food;
 import se459rogue.assets.item.gold.Gold;
+import se459rogue.assets.item.potion.Potion;
+import se459rogue.assets.item.potion.PotionType;
+import se459rogue.assets.item.ring.Ring;
+import se459rogue.assets.item.ring.RingType;
+import se459rogue.assets.item.scroll.Scroll;
+import se459rogue.assets.item.scroll.ScrollType;
 import se459rogue.assets.item.weapon.Weapon;
 import se459rogue.assets.level.Level;
 import se459rogue.assets.player.Player;
@@ -59,7 +67,7 @@ public class ItemManager {
         //later we can add the other cases and we will change the next int boundary to 7
         
         do{
-            itemCNum = itemType.nextInt(3);
+            itemCNum = itemType.nextInt(6);
         }while(itemCNum == 0);
 
         switch (itemCNum) {
@@ -117,10 +125,13 @@ public class ItemManager {
                     }
                 break;
             case 3:
+                    item = itemFactory.createRing();
                 break;
             case 4: 
+                    item = itemFactory.createPotion();
                 break;
             case 5:
+                    item = itemFactory.createScroll();
                 break;
             case 6:
                 break;
@@ -220,7 +231,7 @@ public class ItemManager {
 
     public void equipItem(int slot, Player player){
         if(!player.getItems().isEmpty() && player.getItems().get(slot).getType() != null){
-            if(player.getItems().get(slot).getType() == ItemType.WEAPON || player.getItems().get(slot).getType() == ItemType.ARMOR){
+            if(player.getItems().get(slot).getType() == ItemType.WEAPON || player.getItems().get(slot).getType() == ItemType.ARMOR || player.getItems().get(slot).getType() == ItemType.RING){
                 
                 //Code that checks if the user is selecting the same item
                 //and if it is equiped then unequip it and break out of the code
@@ -238,6 +249,16 @@ public class ItemManager {
                         armor.setEquiped(false);
                         player.setArmor(player.getBaseArmor());
                         player.getItems().set(slot, armor);
+                        return;
+                    }
+                }else if(player.getItems().get(slot).getType() == ItemType.RING){
+                    Ring ring = (Ring) player.getItems().get(slot);
+                    if(ring.isEquiped()){
+                        ring.setEquiped(false);
+                        if(ring.getRingType() == RingType.SLOW_DIGESTION){
+                            player.setSlowDigestion(false);
+                        }
+                        player.getItems().set(slot, ring);
                         return;
                     }
                 }
@@ -269,6 +290,20 @@ public class ItemManager {
                             }
                         }
                     }
+                }else if(player.getItems().get(slot).getType() == ItemType.RING){
+                    for (Item item : player.getItems()) {
+                        if(item.getType() == ItemType.RING){
+                            Ring ring = (Ring) item;
+                            if(ring.isEquiped()){
+                                if(ring.getRingType() == RingType.SLOW_DIGESTION){
+                                    player.setSlowDigestion(false);
+                                }
+                                ring.setEquiped(false);
+                                item = ring;
+                                break;
+                            }
+                        }
+                    }
                 }
 
                 //equips the item
@@ -277,13 +312,54 @@ public class ItemManager {
                     weapon.setEquiped(true);
                     player.setStrength(weapon.getAttack());
                     player.getItems().set(slot, weapon);
-                    return;
                 }else if(player.getItems().get(slot).getType() == ItemType.ARMOR){
                     Armor armor = (Armor) player.getItems().get(slot);
                     armor.setEquiped(true);
                     player.setArmor(armor.getDefense());
                     player.getItems().set(slot, armor);
-                    return;
+                }else if(player.getItems().get(slot).getType() == ItemType.RING){
+                    Ring ring = (Ring) player.getItems().get(slot);
+                    ring.setEquiped(true);
+                    if(ring.getRingType() == RingType.SLOW_DIGESTION){
+                        player.setSlowDigestion(true);
+                    }
+                    player.getItems().set(slot, ring);
+                }
+            }else{
+                if(player.getItems().get(slot).getType() == ItemType.POTION){
+                    Potion potion = (Potion) player.getItems().get(slot);
+                    if(potion.getPotionType() == PotionType.RAISE_LEVEL){
+                        player.setLevel(player.getLevel() + 1);
+                        player.setExperience(0);
+                        player.setMaxHealth(player.getMaxHealth() + 5);
+                        player.setCurrentHealth(player.getMaxHealth());
+                        player.setRequiredExp(player.getRequiredExp() * 2);
+                    }
+                    player.getItems().remove(slot);
+                    JOptionPane.showMessageDialog(null,"You suddenly feel much more skilful."); 
+                }else if(player.getItems().get(slot).getType() == ItemType.SCROLL){
+                    Scroll scroll = (Scroll) player.getItems().get(slot);
+                    if(scroll.getScrollType() == ScrollType.ENCHANT_ARMOR){
+                        int armorIndex = 0;
+                        for (Item item : player.getItems()) {
+                            if(item.getType() == ItemType.ARMOR){
+                                Armor armor = (Armor) item;
+                                if(armor.isEquiped()){
+                                    armorIndex = player.getItems().indexOf(item);
+                                    armor.setDefense(armor.getDefense() - 1);
+                                    item = armor;
+                                    player.setArmor(armor.getDefense());
+                                    break;
+                                }
+                            }
+                        }
+                        if(armorIndex == 0){
+                            JOptionPane.showMessageDialog(null,"You must equip an armor to use this scroll.");
+                        }else{
+                           player.getItems().remove(slot);
+                           JOptionPane.showMessageDialog(null,"Your armor glows faintly for a moment."); 
+                        }
+                    }
                 }
             }
 
