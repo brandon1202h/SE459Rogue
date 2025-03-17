@@ -2,6 +2,12 @@ package se459rogue.assets.item;
 
 import se459rogue.assets.item.armor.Armor;
 import se459rogue.assets.item.armor.ArmorType;
+import se459rogue.assets.item.potion.Potion;
+import se459rogue.assets.item.potion.PotionType;
+import se459rogue.assets.item.ring.Ring;
+import se459rogue.assets.item.ring.RingType;
+import se459rogue.assets.item.scroll.Scroll;
+import se459rogue.assets.item.scroll.ScrollType;
 import se459rogue.assets.item.weapon.Weapon;
 import se459rogue.assets.item.weapon.WeaponType;
 
@@ -179,6 +185,35 @@ public class ItemFactory {
         plateMail.setEquiped(false);
 
         return plateMail;
+    }
+
+    public Ring createRing(){
+        //Needs to be updated to make it dynamic.
+        Ring ring = new Ring();
+        ring.setType(ItemType.RING);
+        ring.setRingType(RingType.SLOW_DIGESTION);
+        ring.setName("DGR");
+        ring.setInventoryName("Slow Digestion Ring");
+        ring.setEquiped(false);
+        return ring;
+    }
+
+    public Potion createPotion(){
+        Potion potion = new Potion();
+        potion.setType(ItemType.POTION);
+        potion.setPotionType(PotionType.RAISE_LEVEL);
+        potion.setName("1+P");
+        potion.setInventoryName("1+ Potion");
+        return potion;
+    }
+
+    public Scroll createScroll(){
+        Scroll scroll = new Scroll();
+        scroll.setType(ItemType.SCROLL);
+        scroll.setScrollType(ScrollType.ENCHANT_ARMOR);
+        scroll.setName("EA");
+        scroll.setInventoryName("Enchant Armor Scroll");
+        return scroll;
     }
 
 
